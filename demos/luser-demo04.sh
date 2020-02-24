@@ -3,22 +3,23 @@
 # This script creates an account on the local system.
 # You will be prompted for the account name and password.
 
-# Ask for the user name.
-read -p 'Enter the username to create: ' USER_NAME
+# 유저명 입력
+read -p '유저 명을 입력하세요.' USER_NAME
 
-# Ask for the real name.
-read -p 'Enter the name of the person who this account is for: ' COMMENT
+# 이름 입력
+read -p '유저의 이름을 입력하세요.' COMMENT
 
-# Ask for the password.
-read -p 'Enter the password to use for the account: ' PASSWORD
+# 비밀번호 입력
+read -p '비밀번호를 입력하세요.' PASSWORD
 
-# Create the user.
+# 유저 생성
+# 스페이스를 포함할 때는 ""로 감싼다
 useradd -c "${COMMENT}" -m ${USER_NAME}
 
 # Set the password for the user.
 # NOTE: You can also use the following command:
-#    echo "${USER_NAME}:${PASSWORD}" | chpasswd
+ #    echo "${USER_NAME}:${PASSWORD}" | chpasswd
 echo ${PASSWORD} | passwd --stdin ${USER_NAME}
 
-# Force password change on first login.
+# 패스워드 강제 만료
 passwd -e ${USER_NAME}

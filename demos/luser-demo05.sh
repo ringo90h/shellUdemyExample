@@ -2,23 +2,19 @@
 
 # This script generates a list of random passwords.
 
-# A random number as a password.
-PASSWORD="${RANDOM}"
-echo "${PASSWORD}"
-
-# Three random numbers together.
+# 랜덤넘버 할당
 PASSWORD="${RANDOM}${RANDOM}${RANDOM}"
 echo "${PASSWORD}"
 
-# Use the current date/time as the basis for the password.
+# 초단위로 패스워드 사용
 PASSWORD=$(date +%s)
 echo "${PASSWORD}"
 
-# Use nanoseconds to act as randomization.
+# 나노세컨드 단위로 패스워드 사용
 PASSWORD=$(date +%s%N)
 echo "${PASSWORD}"
 
-# A better password.
+# 암호 해시화
 PASSWORD=$(date +%s%N | sha256sum | head -c32)
 echo "${PASSWORD}"
 
