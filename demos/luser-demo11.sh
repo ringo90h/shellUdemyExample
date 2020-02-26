@@ -21,9 +21,10 @@ log() {
   fi
 }
 
-# Set a default password length.
+# 기본 패스워드 길이 설정
 LENGTH=48
 
+# 셸의 인수처리 방법
 while getopts vl:s OPTION
 do
   case ${OPTION} in
@@ -43,7 +44,8 @@ do
   esac
 done
 
-# Remove the options while leaving the remaining arguments.
+echo "OPTIND: ${OPTIND}"
+# 마지막 하나의 변수만 남기고 shift
 shift "$(( OPTIND - 1 ))"
 
 if [[ "${#}" -gt 0 ]]

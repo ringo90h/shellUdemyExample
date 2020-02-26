@@ -1,28 +1,28 @@
 #!/bin/bash
 
-# This script deletes a user.
+# 유저 삭제
 
-# Run as root.
+# root 권한 확인
 if [[ "${UID}" -ne 0 ]]
 then
    echo 'Please run with sudo or as root.' >&2
    exit 1
 fi
 
-# Assume the first argument is the user to delete.
+# 첫 번째 파라미터로 삭제할 유저명 받음
 USER="${1}"
 
-# Delete the user.
+# 유저 삭제
 userdel ${USER}
 
-# Make sure the user got deleted.
+# 정상처리되었는지 확인
 if [[ "${?}" -ne 0 ]]
 then
   echo "The account ${USER} was NOT deleted." >&2
   exit 1
 fi
 
-# Tell the user the account was deleted.
+# 결과 출력
 echo "The account ${USER} was deleted."
 
 exit 0

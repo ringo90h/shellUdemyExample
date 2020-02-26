@@ -1,19 +1,13 @@
 #!/bin/bash
-#
-# This script creates a new user on the local system.
-# You must supply a username as an argument to the script.
-# Optionally, you can also provide a comment for the account as an argument.
-# A password will be automatically generated for the account.
-# The username, password, and host for the account will be displayed.
 
-# Make sure the script is being executed with superuser privileges.
+# root 유저인지 확인
 if [[ "${UID}" -ne 0 ]]
 then
    echo 'Please run with sudo or as root.'
    exit 1
 fi
 
-# If the user doesn't supply at least one argument, then give them help.
+# 최소 인자 갯수 1개 이상인지 확인
 if [[ "${#}" -lt 1 ]]
 then
   echo "Usage: ${0} USER_NAME [COMMENT]..."
@@ -21,41 +15,40 @@ then
   exit 1
 fi
 
-# The first parameter is the user name
+# 첫 번째 인자를 유저명에 할당
 USER_NAME="${1}"
 
-# The rest of the parameters are for the account comments.
+# 첫 번째 인자를 제거하고 나머지는 모두 comment에 할당
 shift
 COMMENT="${@}"
 
-# Generate a password.
+# 비밀번호 생성
 PASSWORD=$(date +%s%N | sha256sum | head -c48)
 
-# Create the user with the password.
+# 유저 생성
 useradd -c "${COMMENT}" -m ${USER_NAME}
 
-# Check to see if the useradd command succeeded.
-# We don't want to tell the user that an account was created when it hasn't been.
+# 유저 정상 생성 확인
 if [[ "${?}" -ne 0 ]]
 then
   echo 'The account could not be created.'
   exit 1
 fi
 
-# Set the password.
+# 비밀번호 설정
 echo ${PASSWORD} | passwd --stdin ${USER_NAME}
 
-# Check to see if the passwd command succeeded.
+# 비밀번호 정상 설정 확인
 if [[ "${?}" -ne 0 ]]
 then
   echo 'The password for the account could not be set.'
   exit 1
 fi
 
-# Force password change on first login.
+# 비밀번호 강제 만료
 passwd -e ${USER_NAME}
 
-# Display the username, password, and the host where the user was created.
+# 출력
 echo
 echo 'username:'
 echo "${USER_NAME}"
